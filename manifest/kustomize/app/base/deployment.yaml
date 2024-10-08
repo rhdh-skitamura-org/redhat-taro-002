@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redhat-taro-002
+    answer1: outerloop
+    answer2: innerloop
+  name: redhat-taro-002
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: redhat-taro-002
+  template:
+    metadata:
+      labels:
+        app: redhat-taro-002
+        answer1: outerloop
+        answer2: innerloop
+        kubecraft: "true"
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - image: quay-registry-quay-quay.apps.rosa.rosa-hcp-1544.kfnj.p3.openshiftapps.com/skitamura-quay-org/sc-demo-001/redhat-taro-002:latest
+        name: redhat-taro-002
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        imagePullPolicy: Always
+      serviceAccountName: redhat-taro-002-sa
